@@ -38,6 +38,10 @@ describe TennisScorer do
     expect(tennis_scorer.current_score).to eq(expected_score)
   end
 
+  let(:tennis_scorer) do
+    tennis_scorer = TennisScorer.new
+  end
+
   it 'should score a new game where neither player has scored yet' do
     expect_score_to_eq("0-0")
   end
