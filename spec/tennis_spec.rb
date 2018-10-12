@@ -23,7 +23,7 @@ class TennisScorer
     else
       return @game_state = "PLAYER 1 WINS" if player_1_win?(player)
       return @game_state = "PLAYER 2 WINS" if player_2_win?(player)
-      return @game_state = "DEUCE" if deuce? && ((@game_state == "PLAYER 1 ADVANTAGE" && player != :player1) || (@game_state == "PLAYER 2 ADVANTAGE" && player != :player2))
+      return @game_state = "DEUCE" if return_to_deuce?(player)
       return @game_state = "PLAYER 1 ADVANTAGE" if player_1_advantage?(player)
       return @game_state = "PLAYER 2 ADVANTAGE" if player_2_advantage?(player)
     end
@@ -36,6 +36,10 @@ class TennisScorer
   end
 
   private
+
+  def return_to_deuce?(player)
+    deuce? && ((@game_state == "PLAYER 1 ADVANTAGE" && player != :player1) || (@game_state == "PLAYER 2 ADVANTAGE" && player != :player2))
+  end
 
   def player_2_advantage?(player)
     deuce? && player == :player2
