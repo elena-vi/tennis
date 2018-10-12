@@ -17,16 +17,18 @@ class TennisScorer
   def point_won(player)
     if SCORE[@score[player]]
       @score[player] = SCORE[@score[player]]
+      @game_state = "DEUCE" if deuce?
     elsif @score[:player1] > @score[:player2]
       @game_state = "PLAYER 1 WINS"
+    elsif deuce? && player == :player1
+      @game_state = "PLAYER 1 ADVANTAGE"
+    elsif deuce? && player == :player2
+      @game_state = "PLAYER 2 ADVANTAGE"
     end
   end
 
   def current_score
     return @game_state if @game_state
-    return "DEUCE" if deuce?
-    return "PLAYER 1 ADVANTAGE" unless @score[:player1]
-    return "PLAYER 2 ADVANTAGE" unless @score[:player2]
 
     "#{@score[:player1]}-#{@score[:player2]}"
   end
@@ -100,6 +102,7 @@ describe TennisScorer do
       tennis_scorer.point_won(:player1)
       tennis_scorer.point_won(:player2)
     end
+    p tennis_scorer
     tennis_scorer.point_won(:player1)
     expect_score_to_eq("PLAYER 1 ADVANTAGE")
   end
