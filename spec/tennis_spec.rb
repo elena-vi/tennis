@@ -14,10 +14,12 @@ class TennisScorer
   end
 
   def point_won(player)
-    @score[player] = SCORE[@score[player]]
+      @score[player] = SCORE[@score[player]]
   end
 
   def current_score
+    return "DEUCE" if @score[:player1] == 40 && @score[:player2] == 40
+
     "#{@score[:player1]}-#{@score[:player2]}"
   end
 end
@@ -64,5 +66,13 @@ describe TennisScorer do
   it 'should score a game where player two has scored thrice' do
     3.times { tennis_scorer.point_won(:player2) }
     expect_score_to_eq("0-40")
+  end
+
+  it 'should score a game where both players have scored thrice' do
+    3.times do
+      tennis_scorer.point_won(:player1)
+      tennis_scorer.point_won(:player2)
+    end
+    expect_score_to_eq("DEUCE")
   end
 end
