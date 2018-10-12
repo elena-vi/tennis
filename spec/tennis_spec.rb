@@ -18,20 +18,16 @@ class TennisScorer
     if SCORE[@score[player]]
       @score[player] = SCORE[@score[player]]
       @game_state = "DEUCE" if deuce?
-    elsif @score[:player1] > @score[:player2]
-      @game_state = "PLAYER 1 WINS"
-    elsif @score[:player1] < @score[:player2]
-      @game_state = "PLAYER 2 WINS"
-    elsif deuce? && player == :player1
-      @game_state = "PLAYER 1 ADVANTAGE"
-    elsif deuce? && player == :player2
-      @game_state = "PLAYER 2 ADVANTAGE"
+    else
+      @game_state = "PLAYER 1 WINS" if @score[:player1] > @score[:player2]
+      @game_state = "PLAYER 2 WINS" if @score[:player1] < @score[:player2]
+      @game_state = "PLAYER 1 ADVANTAGE" if deuce? && player == :player1
+      @game_state = "PLAYER 2 ADVANTAGE" if deuce? && player == :player2
     end
   end
 
   def current_score
     return @game_state if @game_state
-
     "#{@score[:player1]}-#{@score[:player2]}"
   end
 
