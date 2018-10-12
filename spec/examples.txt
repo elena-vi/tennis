@@ -1,0 +1,5 @@
+example_id                 | status | run_time        |
+-------------------------- | ------ | --------------- |
+./spec/tennis_spec.rb[1:1] | passed | 0.00021 seconds |
+./spec/tennis_spec.rb[1:2] | passed | 0.00024 seconds |
+./spec/tennis_spec.rb[1:3] | passed | 0.00047 seconds |
