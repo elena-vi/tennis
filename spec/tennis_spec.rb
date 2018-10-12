@@ -1,3 +1,5 @@
+require 'byebug'
+
 class TennisScorer
 
   SCORE = {
@@ -18,8 +20,12 @@ class TennisScorer
     if SCORE[@score[player]]
       @score[player] = SCORE[@score[player]]
       @game_state = "DEUCE" if deuce?
+    elsif deuce? && @game_state == "PLAYER 1 ADVANTAGE"
+      @game_state = "PLAYER 1 WINS"
+    elsif deuce? && @game_state == "PLAYER 2 ADVANTAGE"
+      @game_state = "PLAYER 2 WINS"
     else
-      @game_state = "PLAYER 1 WINS" if @score[:player1] > @score[:player2]
+      @game_state = "PLAYER 1 WINS" if (@score[:player1] > @score[:player2])
       @game_state = "PLAYER 2 WINS" if @score[:player1] < @score[:player2]
       @game_state = "PLAYER 1 ADVANTAGE" if deuce? && player == :player1
       @game_state = "PLAYER 2 ADVANTAGE" if deuce? && player == :player2
@@ -105,9 +111,17 @@ describe TennisScorer do
       tennis_scorer.point_won(:player1)
       tennis_scorer.point_won(:player2)
     end
-    p tennis_scorer
     tennis_scorer.point_won(:player1)
     expect_score_to_eq("PLAYER 1 ADVANTAGE")
+  end
+
+  it 'should score a game where player one have scored twice after deuce' do
+    3.times do
+      tennis_scorer.point_won(:player1)
+      tennis_scorer.point_won(:player2)
+    end
+    2.times{tennis_scorer.point_won(:player1)}
+    expect_score_to_eq("PLAYER 1 WINS")
   end
 
   it 'should score a game where player two have scored once after deuce' do
@@ -117,5 +131,14 @@ describe TennisScorer do
     end
     tennis_scorer.point_won(:player2)
     expect_score_to_eq("PLAYER 2 ADVANTAGE")
+  end
+
+  it 'should score a game where player two have scored twice after deuce' do
+    3.times do
+      tennis_scorer.point_won(:player1)
+      tennis_scorer.point_won(:player2)
+    end
+    2.times{tennis_scorer.point_won(:player2)}
+    expect_score_to_eq("PLAYER 2 WINS")
   end
 end
