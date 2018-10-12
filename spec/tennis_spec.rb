@@ -61,7 +61,7 @@ describe TennisScorer do
     expect_score_to_eq("0-30")
   end
 
-  it 'should score a game where player one has scored thrice' do
+  it 'should score a game where player two has scored thrice' do
     3.times { tennis_scorer.point_won(:player2) }
     expect_score_to_eq("0-40")
   end
