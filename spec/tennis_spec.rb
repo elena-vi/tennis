@@ -18,11 +18,17 @@ class TennisScorer
   end
 
   def current_score
-    return "DEUCE" if @score[:player1] == 40 && @score[:player2] == 40
+    return "DEUCE" if deuce?
     return "PLAYER 1 ADVANTAGE" unless @score[:player1]
     return "PLAYER 2 ADVANTAGE" unless @score[:player2]
 
     "#{@score[:player1]}-#{@score[:player2]}"
+  end
+
+  private
+
+  def deuce?
+    @score[:player1] == 40 && @score[:player2] == 40
   end
 end
 
