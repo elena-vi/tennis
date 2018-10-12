@@ -1,24 +1,23 @@
 class TennisScorer
+
+  SCORE = {
+       0  => 15,
+      15  => 30,
+      30  => 40
+  }.freeze
+
   def initialize
-    @score = "0-0"
+    @score = 0
   end
 
   def point_won
-    if @score == "0-0"
-      @score  = "15-0"
-    elsif @score == "30-0"
-      @score = "40-0"
-    else
-      @score = "30-0"
-    end
+    @score = SCORE[@score]
   end
 
   def current_score
-    @score
+    "#{@score}-0"
   end
 end
-
-
 
 describe TennisScorer do
 
