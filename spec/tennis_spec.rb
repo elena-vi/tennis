@@ -23,6 +23,7 @@ class TennisScorer
     else
       return @game_state = "PLAYER 1 WINS" if player_1_win?(player)
       return @game_state = "PLAYER 2 WINS" if player_2_win?(player)
+      return @game_state = "DEUCE" if deuce? && ((@game_state == "PLAYER 1 ADVANTAGE" && player != :player1) || (@game_state == "PLAYER 2 ADVANTAGE" && player != :player2))
       return @game_state = "PLAYER 1 ADVANTAGE" if player_1_advantage?(player)
       return @game_state = "PLAYER 2 ADVANTAGE" if player_2_advantage?(player)
     end
@@ -155,10 +156,18 @@ describe TennisScorer do
     expect_score_to_eq("PLAYER 2 WINS")
   end
 
-  xit 'should score a game where player two have scored once after player one advantage' do
+  it 'should score a game where player two have scored once after player one advantage' do
     4.times do
       tennis_scorer.point_won(:player1)
       tennis_scorer.point_won(:player2)
+    end
+    expect_score_to_eq("DEUCE")
+  end
+
+  it 'should score a game where player one have scored once after player two advantage' do
+    4.times do
+      tennis_scorer.point_won(:player2)
+      tennis_scorer.point_won(:player1)
     end
     expect_score_to_eq("DEUCE")
   end
