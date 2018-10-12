@@ -20,6 +20,8 @@ class TennisScorer
       @game_state = "DEUCE" if deuce?
     elsif @score[:player1] > @score[:player2]
       @game_state = "PLAYER 1 WINS"
+    elsif @score[:player1] < @score[:player2]
+      @game_state = "PLAYER 2 WINS"
     elsif deuce? && player == :player1
       @game_state = "PLAYER 1 ADVANTAGE"
     elsif deuce? && player == :player2
@@ -87,6 +89,11 @@ describe TennisScorer do
   it 'should score a game where player two has scored thrice' do
     3.times { tennis_scorer.point_won(:player2) }
     expect_score_to_eq("0-40")
+  end
+
+  it 'should score a game where player two has scored four times' do
+    4.times { tennis_scorer.point_won(:player2) }
+    expect_score_to_eq("PLAYER 2 WINS")
   end
 
   it 'should score a game where both players have scored thrice' do
